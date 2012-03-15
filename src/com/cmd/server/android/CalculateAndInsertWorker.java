@@ -49,11 +49,11 @@ public class CalculateAndInsertWorker implements Runnable
 		context.complete();
 	}
 	
-	private TrapInfo jsonToTrapInfo2(String json) 
-	{
-		return null;
-	}
-
+	/**
+	 * Takes a JSON string representation 
+	 * @param json
+	 * @return
+	 */
 	private TrapInfo jsonToTrapInfo(String json) {
 		ObjectMapper mapper = new ObjectMapper();
 		TrapInfo info = null;
