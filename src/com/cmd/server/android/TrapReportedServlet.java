@@ -17,11 +17,10 @@ import com.mongodb.Mongo;
  * Servlet implementation class TrapReportedServlet
  */
 @WebServlet(name="trapReportedServlet", urlPatterns={"/trap"}, asyncSupported = true)
-public class TrapReportedServlet extends HttpServlet {
+public class TrapReportedServlet extends HttpServlet
+{
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(TrapReportedServlet.class);
-
-	
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -30,6 +29,8 @@ public class TrapReportedServlet extends HttpServlet {
 	}
 	
 	/**
+	 * Handles POST requests to the server.
+	 * 
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

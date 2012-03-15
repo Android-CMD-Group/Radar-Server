@@ -2,7 +2,6 @@ package com.cmd.server.android;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.AsyncContext;
 import javax.servlet.http.HttpServletRequest;
@@ -18,20 +17,22 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
 
-public class CalculateAndInsertWorker implements Runnable {
-
+public class CalculateAndInsertWorker implements Runnable
+{
 	private static final Logger log = Logger
 			.getLogger(CalculateAndInsertWorker.class);
 	private AsyncContext context;
 	private Mongo mongoInstance;
 
-	public CalculateAndInsertWorker(AsyncContext context, Mongo mongo) {
+	public CalculateAndInsertWorker(AsyncContext context, Mongo mongo)
+	{
 		this.context = context;
-		mongoInstance = mongo;
+		this.mongoInstance = mongo;
 	}
 
 	@Override
-	public void run() {
+	public void run() 
+	{
 		log.debug("In async thread");
 		String data = getJSONRequest();
 		TrapInfo info = jsonToTrapInfo(data);
@@ -46,6 +47,11 @@ public class CalculateAndInsertWorker implements Runnable {
 		response.setContentType("text/html");
 		response.setStatus(HttpServletResponse.SC_ACCEPTED);
 		context.complete();
+	}
+	
+	private TrapInfo jsonToTrapInfo2(String json) 
+	{
+		return null;
 	}
 
 	private TrapInfo jsonToTrapInfo(String json) {
@@ -67,14 +73,25 @@ public class CalculateAndInsertWorker implements Runnable {
 		return info;
 	}
 
-	private String getJSONRequest() {
+	/**
+	 * Reads a JSON request and converts it into a String
+	 * 
+	 * @return 	String version of the JSON object
+	 * 			null if any exception is thrown
+	 */
+	private String getJSONRequest()
+	{
 		HttpServletRequest request = (HttpServletRequest) context.getRequest();
 		String data = null;
-		try {
-			BufferedReader reader = request.getReader();
-			StringBuilder sb = new StringBuilder();
+		BufferedReader reader = null;
+		StringBuilder sb = null;
+		try
+		{
+			reader = request.getReader();
+			sb = new StringBuilder();
 			String line = reader.readLine();
-			while (line != null) {
+			while (line != null)
+			{
 				sb.append(line);
 				line = reader.readLine();
 			}
@@ -83,9 +100,12 @@ public class CalculateAndInsertWorker implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		log.debug("Json = "+ data);
+		
+		log.debug("Json = " + data);
 		return data;
 	}
+	
+	
 	
 	private void insertToMongo(TrapInfo info){
 		DB db = mongoInstance.getDB(Config.RADAR_DATABASE);

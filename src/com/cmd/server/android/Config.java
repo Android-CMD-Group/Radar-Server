@@ -11,11 +11,11 @@ import com.mongodb.MongoException;
 
 @WebListener()
 public class Config implements ServletContextListener{
-
-	public static final String MONGO_INSTANCE = "MONGO_INSTANCE";
-	public static final String RADAR_DATABASE = "radar";
-	public static final String RAW_TRAP_COLLECTION = "rawTrapData";
 	
+	// Static variables used for accessing the database and the collection(s)
+	public static final String MONGO_INSTANCE = "MONGO_INSTANCE";
+	public static final String RADAR_DATABASE = "radardb";
+	public static final String RAW_TRAP_COLLECTION = "rawTrapData";
 	
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {
@@ -34,8 +34,5 @@ public class Config implements ServletContextListener{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		
 	}
-
 }
