@@ -1,15 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd" >
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 <log4j:configuration>
- <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
-   <layout class="org.apache.log4j.PatternLayout">
-     <param name="ConversionPattern" value="%d{ABSOLUTE} 
-      %5p %c{1}:%L - %m%n"/>
 
-	</layout>
-     </appender>
+<appender name="FILE" class="org.apache.log4j.FileAppender">
+   <param name="file" value="/usr/shar/tomcat7/apache-tomcat-7.0.26/logs/radar-log.out"/>
+   <param name="immediateFlush" value="true"/>
+   <param name="threshold" value="debug"/>
+   <param name="append" value="true"/>
+   <layout class="org.apache.log4j.PatternLayout">
+      <param name="conversionPattern" value="%d{ABSOLUTE} 
+      %5p %c{1}:%L - %m%n"/>
+   </layout>
+</appender>
+
        <root>
 	  <priority value="debug"></priority>
-	  <appender-ref ref="stdout"/>
+	  <appender-ref ref="FILE"/>
 	</root>
+
 </log4j:configuration>
