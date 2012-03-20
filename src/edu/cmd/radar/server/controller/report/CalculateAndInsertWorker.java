@@ -1,4 +1,4 @@
-package com.cmd.server.android;
+package edu.cmd.radar.server.controller.report;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,6 +17,8 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
+
+import edu.cmd.radar.server.model.TrapInfo;
 
 public class CalculateAndInsertWorker implements Runnable {
 
