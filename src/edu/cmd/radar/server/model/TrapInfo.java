@@ -1,4 +1,4 @@
-package com.cmd.server.android;
+package edu.cmd.radar.server.model;
 
 import java.util.ArrayList;
 import java.util.List;

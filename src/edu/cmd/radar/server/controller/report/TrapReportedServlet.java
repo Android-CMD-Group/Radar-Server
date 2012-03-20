@@ -1,4 +1,4 @@
-package com.cmd.server.android;
+package edu.cmd.radar.server.controller.report;
 
 import java.io.IOException;
 
