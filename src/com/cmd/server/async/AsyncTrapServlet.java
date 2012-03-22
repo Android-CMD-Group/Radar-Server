@@ -81,6 +81,8 @@ public class AsyncTrapServlet extends HttpServlet
 		
 		// Starts an asynchronous request and add it to the executor
 		AsyncContext aContext = request.startAsync(request, response);
+		
+		
 		if (this.executor != null) {
 			executor.execute(new InsertTrapService(aContext, this.mongoInstance));
 		}

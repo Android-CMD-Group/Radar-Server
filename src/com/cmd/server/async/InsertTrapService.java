@@ -26,7 +26,7 @@ public class InsertTrapService implements Runnable {
 		log.debug("1) Insert the data into MongoDB");
 		
 		try {
-			Thread.sleep(2000);
+			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
