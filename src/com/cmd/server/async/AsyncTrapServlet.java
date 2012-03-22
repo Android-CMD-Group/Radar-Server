@@ -1,7 +1,14 @@
 package com.cmd.server.async;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
+import javax.servlet.AsyncContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,13 +21,17 @@ import com.mongodb.Mongo;
 
 /**
  * Servlet implementation class AsyncTrapServlet
+ * 
+ * @WebServlet - Defines a servlet and its attributes
  */
 @WebServlet(name="asyncTrapServlet", urlPatterns={"/trap"}, asyncSupported = true)
 public class AsyncTrapServlet extends HttpServlet
 {
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(AsyncTrapServlet.class);
+	
 	private Mongo mongoInstance = null;
+	private ScheduledThreadPoolExecutor executor = null;
 	
 	/**
 	 * Called when a servlet is initialized.  
@@ -29,9 +40,13 @@ public class AsyncTrapServlet extends HttpServlet
 	 */
 	public void init() throws ServletException {
 		log.debug("Initializing servlet");
+			
 		try {
+			
 			this.mongoInstance = new Mongo("localhost");
 			log.debug("Established connection to MongoDB @ " + mongoInstance.getAddress());
+			this.executor = new ScheduledThreadPoolExecutor(10);
+			
 		} catch (Exception e) {
 			log.debug("Failed to establish connection to MongoDB!");
 			e.printStackTrace();
@@ -43,8 +58,13 @@ public class AsyncTrapServlet extends HttpServlet
 	 * curl 'http://localhost:8080/Radar_Server/trap'
 	 */
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.debug("GET request received.");
+		response.setContentType("text/html");
+	    PrintWriter out = response.getWriter();
+	    out.println("<title>Radar_Servlet</title> <body bgcolor=FFFFFF>");
+	    out.println("<h2>GET request received @ " + this.mongoInstance.getAddress() + "</h2>");
+	    out.close();
 	}
 
 	/**
@@ -54,9 +74,16 @@ public class AsyncTrapServlet extends HttpServlet
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.debug("POST request received.");
-		//		AsyncContext ac = request.startAsync();
-		//		Runnable worker = new CalculateAndInsertWorker(ac, mongoInstance);
-		//		ac.start(worker);
+		
+		response.setContentType("text/html");
+		PrintWriter out = response.getWriter();
+		out.println("POST request recieved.");
+		
+		// Starts an asynchronous request and add it to the executor
+		AsyncContext aContext = request.startAsync(request, response);
+		if (this.executor != null) {
+			executor.execute(new InsertTrapService(aContext, this.mongoInstance));
+		}
 	}
 	
 	/**
